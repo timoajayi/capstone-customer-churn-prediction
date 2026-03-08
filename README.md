@@ -1,91 +1,162 @@
-[![Shipping files](https://github.com/neuefische/ds-ml-project-template/actions/workflows/workflow-02.yml/badge.svg?branch=main&event=workflow_dispatch)](https://github.com/neuefische/ds-ml-project-template/actions/workflows/workflow-02.yml)
+# Bank Customer Churn Prediction
 
-# Template Repo for ML Project
+## Project Overview
+A machine learning project that predicts customer churn in a banking dataset. The goal is identifying customers at risk of leaving the bank and to support proactive retention strategies.
 
-This template repo will give you a good starting point for your second project. Besides the files used for creating a virtual environment, you will find a simple example of how to build a simple model in a python script. This is maybe the simplest way to do it. We train a simple model in the jupyter notebook, where we select only some features and do minimal cleaning. The output is then stored in simple python scripts.
+<!-- TO-DO: Add URL for dataset  -->
+The data used for this is: [bank customer dataset](URL).
 
-The data used for this is: [coffee quality dataset](https://github.com/jldbc/coffee-quality-database).
+### Business Problem
+Customer churn reduces long-term revenue and customer lifetime value. Without predictive analytics, banks often react after customers have already churned, making retention efforts costly and ineffective. 
 
+### Business Questions
+1. Which customers are most likely to churn?
+2. Which customer characteristics are associated with churn?
+3. Can we accurately predict churn using machine learning?
+4. Which model performs best for churn prediction?
+5. How can the bank use these predictions to reduce churn?
+
+#### Value Proposition
+This project provides a machine learning model that predicts which customers are likely to leave, allowing the bank to intervene early. 
+**Business value created**
+- Reduced customer churn through early identification of at-risk customers
+- Increased customer lifetime value
+- More efficient marketing and retention campaigns
+- Improved overall customer experience
+
+
+<!-- TO-DO: check with dataset -->
+### Dataset
+The dataset contains information about bank customers including demographics, account characteristics, and financial behaviour.
+- has exited
+- age
+- tenure
+- balance
+- number of products
+- has credit card
+- credit score
+- geography
+- gender
+- estimated salary
+
+Exited
+1 = customer churned
+0 = customer retained
+
+<!-- TO-DO: if needed adjust to actual project work flow -->
+### Project Workflow
+1. Business understanding
+2. Exploratory data analysis
+3. Data preparation
+4. Model training
+5. Model evaluation
+6. Business interpretation
+
+
+<!-- TO-DO: Adjust with actual findings of EDA -->
+### Exploratory Data Analysis (EDA)
+Key insights from the data exploration:
+
+- Customers with higher balances showed a higher probability of churn.
+- Older customers were more likely to leave the bank.
+- Customers with fewer products were more likely to churn.
+- Geography showed differences in churn behavior.
+
+These insights helped guide feature selection and model development.
+
+<!-- TO-DO: adjust with actual model approach / models used -->
+### Modeling Approach / Models Used
+- Logistic Regression
+- Random Forest
+- Gradient Boosting
+
+<!-- TO-DO: adjust with actual evaluation metrics used -->
+### Evaluation Metrics
+- ROC-AUC
+- Precision
+- Recall 
+- F1-score
+
+
+<!-- TO-DO: adjust with actual numbers -->
+## Key Results
+
+| Model                | ROC-AUC | Precision | Recall | F1 Score |
+|----------------------|--------|-----------|--------|----------|
+| Logistic Regression  | 0.79   | 0.68      | 0.60   | 0.64     |
+| Random Forest        | 0.85   | 0.73      | 0.70   | 0.71     |
+| Gradient Boosting    | 0.87   | 0.76      | 0.74   | 0.75     |
+
+<!-- TO-DO: adjust with actual best performing model-->
+**Best Performing Model:** Gradient Boosting
+
+Gradient Boosting achieved the highest ROC-AUC and F1 score, indicating the best overall performance in identifying churned customers while maintaining balanced precision and recall.
+
+
+<!-- TO-DO: adjust with actual insights after analysis-->
+### Business Insights
+
+The analysis revealed several key drivers of customer churn:
+
+- Customers with fewer banking products were more likely to churn.
+- Older customers showed higher churn rates.
+- Customers with higher balances had increased churn probability.
+- Churn behaviour differed across geographic regions.
+
+These findings suggest that customer engagement and product usage are important factors in customer retention.
+
+### Business Impact
+The model allows the bank to:
+- Identify customers at high risk of churn
+- Target retention campaigns more effectively
+- Reduce customer churn
+- Increase customer lifetime value
+
+
+<!-- TO-DO: adjust with actual findings, at least one data-driven argument -->
+### Business Recommendations
+
+Based on the model predictions, the bank can implement several strategies:
+
+- Target high-risk customers with retention campaigns
+- Offer loyalty benefits to customers with high balances
+- Increase engagement with customers who have few products
+- Provide personalized offers based on churn risk scores
+- Encourage customers to adopt additional banking products, as customers with fewer products showed higher churn probability.
+
+
+## Project Structure
+```
+bank-churn-project/
+│
+├── data
+│   ├── raw
+│   └── processed
+│
+├── notebooks
+│   └── churn_analysis.ipynb
+│
+├── src
+│   ├── train.py
+│   └── predict.py
+│
+├── models
+├── requirements.txt
+└── README.md
+```
+
+<!-- TO-DO: check which ones match / adjust, add ,remove otherwise -->
+### Future Improvements
+
+- Hyperparameter tuning to further improve model performance
+- Testing additional models such as XGBoost or LightGBM
+- Feature engineering to capture more complex customer behaviour
+- Model deployment as an API for real-time churn prediction
 ---
 
-## Set up a Kanban board on github
 
-Go to ML-Project Template.
-
-1. Click on "Use this Template" (Blue button)
-![alt text](./images/step_1a_new.png)
-
-1. Create new repository with relevant name, the owner should be your own account. 
-![alt text](./images/step_2_new.png)
-
-1. In your newly create repo, navigate to "Projects", and then click on "Link a project" (blue button). Normally you don't have created a project yet, so you can click the arrow navigation to create project on your profile. This project can be added at the end to your repository.
-![alt text](./images/add_project_new.png)
-
-
-4.  You will be guided to your profiles projects and it will be shown a create project window. Choose "board" view and **not** "table" view.
- ![alt text](./images/choose_board.png)
-5. Now change the name of your board, to match that of your chosen ML project. Then click "Create project" blue button. Great you create Kanban Board
-![alt text](./images/create_project_new.png)
-
-6. Next, assign rights to all your team members by clicking on the 3 dots on the top right of the board, and then go to "Settings".
-![alt text](./images/kanban_settings.png)
-
-
-7. Next, click on "Manage Access". Add your team mates by Searching for their github handle in the search window.Change their Role from ‘Write’ to ‘Admin’. Click on the blue button “Invite” to add them. Repeat for all team members.
-![alt text](./images/team_access_new.png
-)
-
-8. Next,go back to the kanban board and at the bottom  add action items with the relevant name e.g. “load data”, "get statistics", etc.
-![alt text](./images/load_data_item.png
-)
-
-
-9. Convert added item to issue by clicking on the 3 dots on the particular added item.
-![alt text](./images/convert_to_issue.png
-)
-
-10. Then select the repo you created  for the issue to be added. (Select the project repo example “my-project-name”)
-![alt text](./images/select_repo.png
-)
-
-11. When in project repo, Go to issues, then go to milestones. 
-![alt text](./images/to_milestones.png
-)
-
-12. Click on ”New milestone”.
-
-13. Give the milestone a due date and description as per the example provided by the coaches. Add description of: 
-
-    A) What needs to be completed to be done with the milestone
-
-    B) The definition of done: what will your result look like when you have completed the milestone? (check the provided format)
-![alt text](./images/new_milestone.png)
-
-14. Now navigate to "issues".
-
-15. Assign issues to milestones 
-![alt text](./images/milestone_to_issue_new.png)
-
-16. Give it assignees (people who will work on the task). 
-![alt text](./images/milestone_to_someone.png)
-
-### Optional: Add workflows
-
-Workflows can help you keep your kanban board automatically on track. 
-
-Select the project created in the steps above.  
-
-Click on the 3 dots to the far right of the board (...)
-
-Select workflow as the first option. 
-
-Activate the ones you feel necessary to your project
-
-Go back to your project repository (fraud detection))
 
 ## Set up your Environment
-
-
 
 ### **`macOS`** type the following commands : 
 
@@ -163,6 +234,8 @@ python example_files/train.py
 
 In order to test that predict works on a test set you created run:
 
+
+<!-- TO-DO: renaming to eg models/churn_model.sav -->
 ```bash
 python example_files/predict.py models/linear_regression_model.sav data/X_test.csv data/y_test.csv
 ```
@@ -170,6 +243,12 @@ python example_files/predict.py models/linear_regression_model.sav data/X_test.c
 ## Limitations
 
 Development libraries are part of the production environment, normally these would be separate as the production code should be as slim as possible.
+
+<!-- TO-DO: Adjust  -->
+
+- The dataset is relatively small and may not fully represent real banking customers.
+- Some potentially important variables such as customer satisfaction or transaction behaviour are not available.
+- Model performance may vary when applied to different banking populations.
 
 
 ---
