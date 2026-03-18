@@ -82,10 +82,11 @@ These insights helped guide feature selection and model development.
 ## Key Results
 
 | Model                | ROC-AUC | Precision | Recall | F1 Score |
-|----------------------|--------|-----------|--------|----------|
-| Logistic Regression  | 0.79   | 0.68      | 0.60   | 0.64     |
-| Random Forest        | 0.85   | 0.73      | 0.70   | 0.71     |
-| Gradient Boosting    | 0.87   | 0.76      | 0.74   | 0.75     |
+|----------------------|--------|-----------|--------|-----------|
+| Logistic Regression  | 0.77   | 0.48      | 0.52   | 0.49      |
+| Gradient Boosting    | 0.87   | 0.66      | 0.63   | 0.61      |
+| LGBMClassifier       | 0.85   | 0.64      | 0.61   | 0.62      |
+| XGBoost              | 0.86   | 0.69      | 0.55   | 0.61      |
 
 <!-- TO-DO: adjust with actual best performing model-->
 **Best Performing Model:** Gradient Boosting
@@ -127,7 +128,7 @@ Based on the model predictions, the bank can implement several strategies:
 
 ## Project Structure
 ```
-bank-churn-project/
+Bank-churn-project/
 │
 ├── data
 │   ├── raw
@@ -138,7 +139,8 @@ bank-churn-project/
 │
 ├── src
 │   ├── train.py
-│   └── predict.py
+│   ├── predict.py 
+│   └── e.py
 │
 ├── models
 ├── requirements.txt
@@ -149,8 +151,9 @@ bank-churn-project/
 ### Future Improvements
 
 - Hyperparameter tuning to further improve model performance
-- Testing additional models such as XGBoost or LightGBM
+- Testing additional models such as Support Vector Machines or Neural Networks
 - Feature engineering to capture more complex customer behaviour
+- Make a streamlit app for visualisation and prediction
 - Model deployment as an API for real-time churn prediction
 ---
 
