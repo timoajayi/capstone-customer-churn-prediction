@@ -28,7 +28,6 @@ model, label_encoder_gender, encoder = load_all()
 
 
 ## Define the streamlit app
-st.title("Customer Churn Prediction")
 
 # Create input fields for user to enter customer data
 geography = st.selectbox("Geography", encoder.categories_[0])
@@ -55,9 +54,10 @@ input_data = pd.DataFrame({
     'Geography': [geography]
 })
 
-if st.button("Predict Churn"):
 
-    # 1. Encode Geography
+def predict_churn(input_data, model, label_encoder_gender, encoder):
+    
+    # Encode Geography
     geo_encoded = encoder.transform(input_data[['Geography']]).toarray()
 
     geo_df = pd.DataFrame(
@@ -65,29 +65,83 @@ if st.button("Predict Churn"):
         columns=encoder.get_feature_names_out(['Geography'])
     )
 
-    # 2. Drop original Geography
+    # Drop original Geography
     input_data_model = input_data.drop('Geography', axis=1)
 
-    # 3. Combine
+    # Combine
     input_data_model = pd.concat(
         [input_data_model.reset_index(drop=True), geo_df],
         axis=1
     )
 
-    # 4. Align columns (VERY IMPORTANT)
+    # Align columns
     input_data_model = input_data_model.reindex(
         columns=model.feature_names_in_,
         fill_value=0
     )
 
-    # 5. Predict probability
+    # Predict
     prediction_probability = model.predict_proba(input_data_model)[0][1]
 
-    # 6. Display result
-    if prediction_probability > 0.5:
-        st.error(f"⚠️ High Risk: Customer likely to churn ({prediction_probability:.2f})")
-    else:
-        st.success(f"✅ Low Risk: Customer likely to stay ({prediction_probability:.2f})")
+    return prediction_probability
 
-    st.progress(int(prediction_probability * 100))
+
+THRESHOLD = 0.35
+
+prediction_probability = predict_churn(
+    input_data,
+    model,
+    label_encoder_gender,
+    encoder
+)
+
+# Display result
+if prediction_probability > THRESHOLD:
+    st.error(f"⚠️ High Risk: Customer likely to churn ({prediction_probability:.2%})")
+else:
+    st.success(f"✅ Low Risk: Customer likely to stay ({prediction_probability:.2%})")
+
+# Progress bar
+st.progress(int(prediction_probability * 100))
+
+# Explanation
+st.caption(f"Threshold set at {THRESHOLD} to improve recall and detect more at-risk customers.")
+
+
+
+# if st.button("Predict Churn"):
+
+#     # 1. Encode Geography
+#     geo_encoded = encoder.transform(input_data[['Geography']]).toarray()
+
+#     geo_df = pd.DataFrame(
+#         geo_encoded,
+#         columns=encoder.get_feature_names_out(['Geography'])
+#     )
+
+#     # 2. Drop original Geography
+#     input_data_model = input_data.drop('Geography', axis=1)
+
+#     # 3. Combine
+#     input_data_model = pd.concat(
+#         [input_data_model.reset_index(drop=True), geo_df],
+#         axis=1
+#     )
+
+#     # 4. Align columns (VERY IMPORTANT)
+#     input_data_model = input_data_model.reindex(
+#         columns=model.feature_names_in_,
+#         fill_value=0
+#     )
+
+#     # 5. Predict probability
+#     prediction_probability = model.predict_proba(input_data_model)[0][1]
+
+#     # 6. Display result
+#     if prediction_probability > 0.5:
+#         st.error(f"⚠️ High Risk: Customer likely to churn ({prediction_probability:.2f})")
+#     else:
+#         st.success(f"✅ Low Risk: Customer likely to stay ({prediction_probability:.2f})")
+
+#     st.progress(int(prediction_probability * 100))
 

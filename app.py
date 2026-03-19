@@ -10,21 +10,38 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 
-
-
-st.set_page_config(page_title='Pokemon', 
-                   page_icon=':smiley:', 
-                   layout='wide'
-                   )
+st.set_page_config(
+    page_title='Customer Churn Dashboard',
+    page_icon='📊',
+    layout='wide'
+)
 
 navigation()
 # Write title/header
-st.title("Customer Churn Prediction")
+st.title("🚀 Customer Churn Intelligence Dashboard")
 
 #st.markdown('Hi!!')
 st.image('images/pic.png')
-st.subheader('What is your favourite Pokemon?')
-st.markdown('- EDA Visualizations / Dataset exploration \n - __Prediction: Did my customer churn? \n - Find our Pokemon in the map')
+st.markdown("""
+This application helps banks understand and predict customer churn using data and machine learning.
+
+### 🔍 Explore:
+- 📊 Customer behavior and churn patterns  
+- 🤖 Predict churn risk  
+- 🌍 Identify high-risk regions  
+
+💡 Built to support data-driven retention strategies and improve customer lifetime value.
+""")
+
+st.markdown("---")
+
+st.subheader("📌 How to use this dashboard")
+
+st.markdown("""
+1. Go to **EDA** → explore patterns in the data  
+2. Use **Prediction** → test churn risk  
+3. View **Geography** → identify high-risk regions  
+""")
 
 # Save variabale to session state
 # Save variables in the session state

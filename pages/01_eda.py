@@ -2,56 +2,88 @@ import streamlit as st
 import pandas as pd 
 from functions import navigation
 import plotly.express as px
-import plotly.graph_objects as go   
+import plotly.graph_objects as go
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+import streamlit as st   
 
 navigation()
 st.session_state.df = pd.read_csv('data/Churn_Modelling.csv')
-# st.session_state.stats_cols = ['hit_points', 'attack', 'defense', 'sp_attack', 'sp_defense', 'speed']
 
+df1 = st.session_state.df.copy()
 
-# fig = px.scatter(
-#     st.session_state.df,
-#     x='height_m',
-#     y='weight_kg',
-#     color='type',
-#     size='speed',
-#     title='Height vs Weight (Plotly)',
-#     hover_data=['name']
-# )
+## Page content
+st.title("Exploratory Data Analysis")
 
+st.markdown("### 📊 Customer Churn Distribution")
 
-# fig.update_traces(
-#     hovertemplate=
-#     '<b>Name:</b> %{customdata[0]}<br>' +
-#     '<b>Height (m):</b> %{x}<br>' +
-#     '<b>Weight (kg):</b> %{y}<br>' +
-#     '<b>Type:</b> %{customdata[1]}<br>' +
-#     '<b>Speed:</b> %{customdata[2]}<br>' +
-#     '<extra></extra>', 
-#     customdata=st.session_state.df[['name', 'type', 'speed']].values)
+## Target variable distribution
+counts = df1["Exited"].value_counts().sort_index()
 
-# st.plotly_chart(fig)
+df_plot = counts.reset_index()
+df_plot.columns = ["Exited", "Count"]
 
+df_plot["Label"] = df_plot["Exited"].map({0: "Stayed", 1: "Churned"})
 
-# # Radar chart
+fig = px.bar(
+    df_plot,
+    x="Label",
+    y="Count",
+    color="Label",
+    text="Count",
+    color_discrete_map={
+        "Stayed": "steelblue",
+        "Churned": "salmon"
+    }
+)
 
-# st.subheader('Pokémon Stats Radar Chart')
+fig.update_layout(
+    xaxis_title="Customer Status",
+    yaxis_title="Number of Customers",
+    showlegend=False,   # cleaner since labels already shown
+    template="plotly_dark"
+)
 
-# pokemon_name = st.selectbox(
-#     'Select Pokemon',
-#     st.session_state.df['name'].tolist(),
-#     key="pokemon"
-# )
+st.plotly_chart(fig, use_container_width=True)
 
-# pokemon_row = st.session_state.df[st.session_state.df['name']==pokemon_name].iloc[0]
+st.info(
+    "The dataset is imbalanced, with significantly more customers staying than churning. "
+    "This means accuracy alone is not sufficient, and metrics like recall and F1-score are more important."
+)
 
-# fig = go.Figure()
+#2) second plot - churn by tenure
+st.subheader("⏳ Churn by Customer Tenure")
 
-# fig.add_trace(go.Scatterpolar(
-#               r=pokemon_row[st.session_state.stats_cols].values,
-#               theta=st.session_state.stats_cols,
-#               fill='toself',
-#               name=pokemon_name)
-# )
+df1['Tenure_group'] = pd.cut(
+    df1['Tenure'],
+    bins=[0,2,5,8,10],
+    labels=['0-2','3-5','6-8','9-10']
+)
 
-# st.plotly_chart(fig)
+# Better labels
+df1["Churn_Label"] = df1["Exited"].map({0: "Stayed", 1: "Churned"})
+
+fig = px.histogram(
+    df1,
+    x='Tenure_group',
+    color='Churn_Label',
+    barmode='group',
+    text_auto=True,
+    color_discrete_map={
+        "Stayed": "steelblue",
+        "Churned": "salmon"
+    }
+)
+
+fig.update_layout(
+    xaxis_title='Tenure Group (Years)',
+    yaxis_title='Number of Customers',
+    template="plotly_dark"  # matches your map
+)
+
+st.plotly_chart(fig, use_container_width=True)
+
+st.info(
+    "Customers with fewer years at the bank show higher churn rates, indicating that retention efforts should focus on early customer engagement. "
+    "Improving onboarding experience and initial product adoption could significantly reduce churn."
+)
