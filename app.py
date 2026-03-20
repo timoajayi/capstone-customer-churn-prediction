@@ -18,10 +18,10 @@ st.set_page_config(
 
 navigation()
 # Write title/header
-st.title("🚀 Customer Churn Intelligence Dashboard")
+#st.title("Customer Churn Intelligence Dashboard")
 
 #st.markdown('Hi!!')
-st.image('images/pic.png')
+st.image('images/churn_prediction.png')
 st.markdown("""
 This application helps banks understand and predict customer churn using data and machine learning.
 
@@ -52,7 +52,7 @@ st.session_state.df = pd.read_csv('data/Churn_Modelling.csv')
 
 
 
-
+# The below is for ANN model prediction, but I wont use it because I want to use the XGBoost model instead, which is more interpretable and better for tabular data.
 
 # # Load the trained model and encoders
 # @st.cache_resource

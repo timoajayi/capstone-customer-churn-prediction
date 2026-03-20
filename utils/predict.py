@@ -11,7 +11,7 @@ warnings.filterwarnings('ignore')
 
 @st.cache_resource
 def load_all():
-    filepath = os.path.join("models", "best_model.pkl")
+    filepath = os.path.join("models", "churn_model.pkl")
     with open(filepath, "rb") as f:
         model = pickle.load(f)
 

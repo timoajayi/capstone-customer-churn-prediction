@@ -81,12 +81,12 @@ These insights helped guide feature selection and model development.
 <!-- TO-DO: adjust with actual numbers -->
 ## Key Results
 
-| Model                | ROC-AUC | Precision | Recall | F1 Score |
-|----------------------|--------|-----------|--------|-----------|
-| Logistic Regression  | 0.77   | 0.48      | 0.52   | 0.49      |
-| Gradient Boosting    | 0.87   | 0.66      | 0.63   | 0.61      |
-| LGBMClassifier       | 0.85   | 0.64      | 0.61   | 0.62      |
-| XGBoost              | 0.86   | 0.69      | 0.55   | 0.61      |
+| Model                | Recall | F1 Score  |
+|----------------------|--------|-----------|
+| Logistic Regression  | 0.52   | 0.49      |
+| Gradient Boosting    | 0.63   | 0.61      |
+| LGBMClassifier       | 0.61   | 0.62      |
+| XGBoost              | 0.86   | 0.69      |
 
 <!-- TO-DO: adjust with actual best performing model-->
 **Best Performing Model:** Gradient Boosting

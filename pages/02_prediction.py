@@ -1,3 +1,5 @@
+from pyexpat import model
+
 import streamlit as st
 import functions as f
 #from utils.predict import load_all, predict_churn
@@ -14,38 +16,42 @@ st.set_page_config(
 
 f.navigation()
 
+
 @st.cache_resource
 def load_all():
-    filepath = os.path.join("models", "best_model.pkl")
+    # Load artifact
+    filepath = os.path.join("models", "churn_model.pkl")
     with open(filepath, "rb") as f:
-        model = pickle.load(f)
+        artifact = pickle.load(f)
 
-    with open('label_encoder_gender.pkl', 'rb') as f:
+    model = artifact["model"]
+    threshold = artifact["threshold"]
+
+    # Load encoders
+    with open(os.path.join("models", "label_encoder_gender.pkl"), 'rb') as f:
         label_encoder_gender = pickle.load(f)
 
-    with open('encoder.pkl', 'rb') as f:
+    with open(os.path.join("models", "encoder.pkl"), 'rb') as f:
         encoder = pickle.load(f)
 
-    return model, label_encoder_gender, encoder
+    return model, threshold, label_encoder_gender, encoder
 
-model, label_encoder_gender, encoder = load_all()
-
-
+model, threshold, label_encoder_gender, encoder = load_all()
 
 ## Define the streamlit app
 st.title("Customer Churn Prediction")
 
 # Create input fields for user to enter customer data
+credit_score = st.number_input("Credit Score", key="credit")
 geography = st.selectbox("Geography", encoder.categories_[0], key="geo")
 gender = st.selectbox("Gender", label_encoder_gender.classes_, key="gender")
 age = st.slider("Age", 18, 92, key="age")
-balance = st.number_input('Balance', key="balance")
-credit_score = st.number_input("Credit Score", key="credit")
-estimated_salary = st.number_input("Estimated Salary", key="salary")
 tenure = st.slider("Tenure", 0, 10, key="tenure")
+balance = st.number_input('Balance', key="balance")
 num_of_products = st.slider("Number of Products", 1, 4, key="products")
 has_cr_card = st.selectbox("Has Credit Card", [0, 1], key="card")
 is_active_member = st.selectbox("Is Active Member", [0, 1], key="active")
+estimated_salary = st.number_input("Estimated Salary", key="salary")
 
 input_data = pd.DataFrame({
     'CreditScore': [credit_score],
@@ -92,7 +98,7 @@ def predict_churn(input_data, model, label_encoder_gender, encoder):
     return prediction_probability
 
 
-THRESHOLD = 0.35
+THRESHOLD = 0.31
 
 if st.button("Predict Churn", key="predict_btn"):
 
@@ -117,68 +123,22 @@ if st.button("Predict Churn", key="predict_btn"):
 
 
 
+# @st.cache_resource
+# def load_all():
+#     filepath = os.path.join("models", "churn_model.pkl")
+#     with open(filepath, "rb") as f:
+#         artifact = pickle.load(f)
 
+#     model = artifact["model"]
+#     threshold = artifact["threshold"]
 
+#     with open('label_encoder_gender.pkl', 'rb') as f:
+#         label_encoder_gender = pickle.load(f)
 
+#     with open('encoder.pkl', 'rb') as f:
+#         encoder = pickle.load(f)
 
-# st.title("⚡️ Is my Pokémon legendary??")
-# st.subheader("Let's find out!")
-# st.space("medium")
-# st.subheader("Enter Pokémon Stats")
+#     return model, label_encoder_gender, encoder
 
-# col1, col2, col3 = st.columns(3)
+# model, label_encoder_gender, encoder = load_all()
 
-
-# with col1:
-#     attack = st.number_input('Attack', min_value=1, max_value=255, value=80, step=5)
-#     sp_attack = st.number_input("Special Attack", min_value=1, max_value=255, value=75, step=5)
-
-# with col2:
-#     defense = st.slider('Defense', min_value=1, max_value=255, value=80)
-#     sp_defense = st.slider("Special Defense", min_value=20, max_value=255, value=75)
-
-# with col3:
-#     hp_str = st.text_input('Hit points', '70')
-#     try:
-#         hit_points = int(hp_str)
-#         if hit_points > 255:
-#             st.warning("HP cannot exceed 255. Setting to 255.")
-#             hit_points = 255
-#         elif hit_points < 1:
-#             st.warning("HP must be at least 1. Setting to 1.")
-#             hit_points = 1
-#     except ValueError:
-#         st.warning("Please enter a valid integer for HP.")
-#         hit_points = 70
-    
-#     speed_str = st.text_input("Speed", "10")
-#     try:
-#         speed = int(speed_str)
-#         if speed > 255:
-#             st.warning("Speed cannot exceed 255. Setting to 255.")
-#             speed = 255
-#         elif speed < 5:
-#             st.warning("Speed must be at least 5. Setting to 5.")
-#             speed = 5
-#     except ValueError:
-#         st.warning("Please enter a valid integer for the speed.")
-#         speed = 10
-
-# if st.button('Predict!'):
-#     features = {
-#         "hit_points": hit_points,
-#         "attack": attack,
-#         "defense": defense,
-#         "sp_attack": sp_attack,
-#         "sp_defense": sp_defense,
-#         "speed": speed
-#     }
-
-#     y_pred, y_prob = predict(features)
-
-#     if y_pred == 1:
-#         st.success(f'✅ This Pokemon is **Legendary!** (probability = {y_prob:.2%})')
-#         st.balloons()
-#     else:
-#         st.info(f'❌ This Pokemon is **not Legendary!** (probability of the pokemon being legendary = {y_prob:.2%})')
-#         st.snow()

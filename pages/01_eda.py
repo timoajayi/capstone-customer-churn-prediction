@@ -85,5 +85,38 @@ st.plotly_chart(fig, use_container_width=True)
 
 st.info(
     "Customers with fewer years at the bank show higher churn rates, indicating that retention efforts should focus on early customer engagement. "
-    "Improving onboarding experience and initial product adoption could significantly reduce churn."
+    "Improving onboarding experience and targeted incentives to build loyalty from the beginning."
 )
+
+
+st.subheader("📈 Model Performance Comparison")
+
+results_df = pd.DataFrame({
+    "Model": [
+        #"Logistic Regression",
+        "Gradient Boosting",
+        "LGBMClassifier",
+        "XGBoost"
+    ],
+    "Recall": [0.63, 0.61, 0.60], # logistic regression recall is 0.52, but I want to focus on the tree-based models since they are more interpretable and better for tabular data, so I will remove it from the plot.
+    "F1 Score": [0.61, 0.62, 0.61] # logistic regression F1 score is 0.49, but I want to focus on the tree-based models since they are more interpretable and better for tabular data, so I will remove it from the plot.
+})
+
+results_melted = results_df.melt(
+    id_vars="Model",
+    value_vars=["Recall", "F1 Score"],
+    var_name="Metric",
+    value_name="Score"
+)
+
+fig = px.bar(
+    results_melted,
+    x="Model",
+    y="Score",
+    color="Metric",
+    barmode="group",
+   
+)
+
+st.plotly_chart(fig, use_container_width=True)
+st.success("🏆 Gradient Boosting performs best, achieving the highest recall (63%), meaning it is most effective at identifying customers likely to churn.")
