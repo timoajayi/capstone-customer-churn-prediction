@@ -15,6 +15,9 @@ df1 = st.session_state.df.copy()
 ## Page content
 st.title("Exploratory Data Analysis")
 
+PRIMARY = "#1f77b4"   # blue
+ALERT   = "#d62728"   # red
+
 st.markdown("### 📊 Customer Churn Distribution")
 
 ## Target variable distribution
@@ -32,8 +35,8 @@ fig = px.bar(
     color="Label",
     text="Count",
     color_discrete_map={
-        "Stayed": "steelblue",
-        "Churned": "salmon"
+        "Stayed": PRIMARY,
+        "Churned": ALERT
     }
 )
 
@@ -70,8 +73,8 @@ fig = px.histogram(
     barmode='group',
     text_auto=True,
     color_discrete_map={
-        "Stayed": "steelblue",
-        "Churned": "salmon"
+        "Stayed": PRIMARY,
+        "Churned": ALERT
     }
 )
 
@@ -98,7 +101,7 @@ results_df = pd.DataFrame({
         "LGBMClassifier",
         "XGBoost"
     ],
-    "Recall": [0.63, 0.61, 0.60], # logistic regression recall is 0.52, but I want to focus on the tree-based models since they are more interpretable and better for tabular data, so I will remove it from the plot.
+    "Recall": [0.74, 0.61, 0.60], # logistic regression recall is 0.52, but I want to focus on the tree-based models since they are more interpretable and better for tabular data, so I will remove it from the plot.
     "F1 Score": [0.61, 0.62, 0.61] # logistic regression F1 score is 0.49, but I want to focus on the tree-based models since they are more interpretable and better for tabular data, so I will remove it from the plot.
 })
 
@@ -115,8 +118,12 @@ fig = px.bar(
     y="Score",
     color="Metric",
     barmode="group",
-   
+    color_discrete_map={
+        "Recall": PRIMARY,
+        "F1 Score": ALERT
+    }
+
 )
 
 st.plotly_chart(fig, use_container_width=True)
-st.success("🏆 Gradient Boosting performs best, achieving the highest recall (63%), meaning it is most effective at identifying customers likely to churn.")
+st.success("🏆 Gradient Boosting performs best, achieving the highest recall (74%), meaning it is most effective at identifying customers likely to churn.")

@@ -46,11 +46,15 @@ fig.update_layout(
     paper_bgcolor="black",
     plot_bgcolor="black",
     geo=dict(
+        projection_type="natural earth",  # 👈 globe-like projection
+        projection_scale=2.5,          # 👈 zoom level (increase to zoom more)
+        center={"lat": 50, "lon": 10},  # 👈 center of Europe
         bgcolor="black",
         showcoastlines=True,
         coastlinecolor="gray",
         landcolor="#1f1f1f",
         showocean=True,
+        showframe=False,
         oceancolor="#0a0a0a"
     ),
     coloraxis_colorbar_title="Churn Rate"
